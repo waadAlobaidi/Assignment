@@ -1,5 +1,7 @@
 package junit;
 
+
+import engine.ActionsBot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -13,10 +15,13 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+
 public abstract class testCase {
     protected WebDriver driver4;
     protected Wait<WebDriver> wait;
-    public static Logger logger;
+    protected static Logger logger;
+    public ActionsBot bot;
+
 
     @BeforeAll
     public static void beforeAll(){
@@ -25,17 +30,19 @@ public abstract class testCase {
     }
 
 
+
+
     @BeforeEach
-    public void BeforeEach(){
+    public void beforeEach(){
         logger.info("Opening Chrome Browser");
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("start-maximized");
         driver4 = new ChromeDriver(chromeOptions);
         logger.info("Configuring 5 second explicit wait");
-        wait = new WebDriverWait(driver4, Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver4, Duration.ofSeconds(5));
+        bot = new ActionsBot(driver4, wait, logger);
 
     }
-
 
     @AfterEach
     public void afterEach(){
